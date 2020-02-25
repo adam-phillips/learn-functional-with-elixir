@@ -16,13 +16,27 @@ defmodule Sort do
   def ascending([]), do: []
   def ascending([a]), do: [a]
   def ascending(list) do
-    half_size = div(Enum.count(list), 2)
-    {list_a, list_b} = Enum.split(list, half_size)
-    merge(
+#    half_size = div(Enum.count(list), 2)
+    half_size(list)
+    {list_a, list_b} = Enum.split(list, half_size(list))
+    asc_merge(
       ascending(list_a),
       ascending(list_b)
     )
   end
+
+  def descending([]), do: []
+  def descending([a]), do: [a]
+  def descending(list) do
+    half_size(list)
+    {list_a, list_b} = Enum.split(list, half_size(list))
+    desc_merge(
+      descending(list_a),
+      descending(list_b)
+    )
+  end
+
+  defp half_size(list), do: div(Enum.count(list), 2)
 
 #    Group of functions that recursively merge lists from the smallest value to
 #    the largest. The catch clauses stop operation when passed an empty list as
@@ -48,12 +62,23 @@ defmodule Sort do
 #      merge([5, 9], merge([1, 5], [4]))
 #      merge([5, 9], [1, 4, 5])
 #      [1, 4, 5, 5, 9]
-  defp merge([], list_b), do: list_b
-  defp merge(list_a, []), do: list_a
-  defp merge([head_a | tail_a], list_b = [head_b | _]) when head_a <= head_b do
-    [head_a | merge(tail_a, list_b)]
+  defp asc_merge([], list_b), do: list_b
+  defp asc_merge(list_a, []), do: list_a
+  defp asc_merge([head_a | tail_a], list_b = [head_b | _]) when head_a <= head_b do
+    [head_a | asc_merge(tail_a, list_b)]
   end
-  defp merge(list_a = [head_a | _], [head_b | tail_b]) when head_a > head_b do
-    [head_b | merge(list_a, tail_b)]
+  defp asc_merge(list_a = [head_a | _], [head_b | tail_b]) when head_a > head_b do
+    [head_b | asc_merge(list_a, tail_b)]
+  end
+
+#    This function works just like the ascending merge recursive calls, but
+#    handles merging in a descending order
+  defp desc_merge([], list_b), do: list_b
+  defp desc_merge(list_a, []), do: list_a
+  defp desc_merge([head_a | tail_a], list_b = [head_b | _]) when head_a >= head_b do
+    [head_a | desc_merge(tail_a, list_b)]
+  end
+  defp desc_merge(list_a = [head_a | _], [head_b | tail_b]) when head_a < head_b do
+    [head_b | desc_merge(list_a, tail_b)]
   end
 end

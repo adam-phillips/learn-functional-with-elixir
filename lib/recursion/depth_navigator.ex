@@ -30,4 +30,10 @@ defmodule DepthNavigator do
     print_and_navigate(content, File.dir?(content), current_depth)
     go_through(rest, current_depth)
   end
+
+  defp expand_dirs([], _relative_to), do: []
+  defp expand_dirs([dir | dirs], relative_to) do
+    expanded_dir = Path.expand(dir, relative_to)
+    [expanded_dir | expand_dirs(dirs, relative_to)]
+  end
 end
