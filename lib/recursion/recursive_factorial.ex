@@ -1,4 +1,4 @@
-defmodule Factorial do
+defmodule RecursiveFactorial do
   @moduledoc """
     Module to demo the approach to recursion known as "Decrease and Conquer".
     This reduces a problem to its simplest form and starts solving it
