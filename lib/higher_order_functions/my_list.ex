@@ -14,4 +14,13 @@ defmodule MyList do
   def reduce([head | tail], acc, function) do
     reduce(tail, function.(head, acc), function)
   end
+
+  def filter([], _function), do: []
+  def filter([head | tail], function) do
+    if function.(head) do
+      [head | filter(tail, function)]
+    else
+      filter(tail, function)
+    end
+  end
 end
