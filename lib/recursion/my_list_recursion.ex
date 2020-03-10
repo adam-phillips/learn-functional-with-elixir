@@ -1,4 +1,4 @@
-defmodule MyList do
+defmodule MyListRecursion do
   def max([]), do: nil
   def max([a]), do: a
   def max([a, b | rem]) when a >= b, do: find_max(rem, a)
