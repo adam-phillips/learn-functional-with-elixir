@@ -93,6 +93,8 @@ defmodule ScrewsFactory do
     |> Stream.flat_map(&add_thread/1)
     |> Stream.chunk_every(100)
     |> Stream.flat_map(&add_head/1)
+    |> Stream.chunk_every(30)
+    |> Stream.flat_map(&pack_screws/1)
     |> Enum.each(&output/1)
   end
 
@@ -104,6 +106,12 @@ defmodule ScrewsFactory do
   defp add_head(pieces) do
     Process.sleep(100)
     Enum.map(pieces, &("o" <> &1))
+  end
+
+  defp pack_screws(pieces) do
+    Process.sleep(70)
+    Enum.map(pieces, &("|" <> &1 <> "|"))
+    # Using interpolation on ^ : Enum.map(pieces, &"|#{&1}|")
   end
 
   defp output(screw) do
